@@ -4,7 +4,7 @@
 #
 Name     : pass
 Version  : 1.7.3
-Release  : 1
+Release  : 2
 URL      : https://git.zx2c4.com/password-store/snapshot/password-store-1.7.3.tar.xz
 Source0  : https://git.zx2c4.com/password-store/snapshot/password-store-1.7.3.tar.xz
 Summary  : No detailed summary available
@@ -27,7 +27,6 @@ Summary: bin components for the pass package.
 Group: Binaries
 Requires: pass-data = %{version}-%{release}
 Requires: pass-license = %{version}-%{release}
-Requires: pass-man = %{version}-%{release}
 
 %description bin
 bin components for the pass package.
@@ -59,22 +58,27 @@ man components for the pass package.
 
 %prep
 %setup -q -n password-store-1.7.3
+cd %{_builddir}/password-store-1.7.3
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
-export LANG=C
-export SOURCE_DATE_EPOCH=1551376522
-export LDFLAGS="${LDFLAGS} -fno-lto"
+export LANG=C.UTF-8
+export SOURCE_DATE_EPOCH=1604085138
+export GCC_IGNORE_WERROR=1
+export CFLAGS="$CFLAGS -fno-lto "
+export FCFLAGS="$FFLAGS -fno-lto "
+export FFLAGS="$FFLAGS -fno-lto "
+export CXXFLAGS="$CXXFLAGS -fno-lto "
 make  %{?_smp_mflags}
 
 
 %install
-export SOURCE_DATE_EPOCH=1551376522
+export SOURCE_DATE_EPOCH=1604085138
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/pass
-cp COPYING %{buildroot}/usr/share/package-licenses/pass/COPYING
+cp %{_builddir}/password-store-1.7.3/COPYING %{buildroot}/usr/share/package-licenses/pass/ffe620e004df8ec67f8310673447f712fc0e90c9
 %make_install
 
 %files
@@ -91,7 +95,7 @@ cp COPYING %{buildroot}/usr/share/package-licenses/pass/COPYING
 
 %files license
 %defattr(0644,root,root,0755)
-/usr/share/package-licenses/pass/COPYING
+/usr/share/package-licenses/pass/ffe620e004df8ec67f8310673447f712fc0e90c9
 
 %files man
 %defattr(0644,root,root,0755)
